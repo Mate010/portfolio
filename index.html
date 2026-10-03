@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matéo Grossi — Artiste 3D & développeur</title>
+  <meta name="description" content="Portfolio de Matéo Grossi : projets 3D (modélisation, texturing, lighting, Unreal Engine) et projets de développement en C/C++ réalisés à 42 Paris.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    (function () {
+      var root = document.documentElement, theme = null;
+      root.classList.add('js');
+      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      root.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body class="home">
+
+  <header class="site-header">
+    <div class="header-inner">
+      <nav id="site-nav" class="site-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="index.html" aria-current="page">Accueil</a></li>
+          <li><a href="3d.html">Projets 3D</a></li>
+          <li><a href="code.html">Code</a></li>
+          <li><a href="cv.html">CV & Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-tools">
+        <button class="theme-toggle" type="button" aria-label="Changer de thème">
+          <svg class="icon icon-stroke icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="icon icon-stroke icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Ouvrir le menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Vidéo d'arrière-plan : Showreel 2024 (YouTube), affichée de 5 s à 57 s pour masquer les cartons titre -->
+  <div class="hero-bg" data-video="vMgToajT_ak" data-start="5" data-end="57" aria-hidden="true">
+    <img src="assets/img/showreel-poster.jpg" alt="">
+    <div class="hero-player"></div>
+  </div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <main class="hero">
+    <div class="hero-content">
+      <p class="hero-kicker">Artiste 3D · Développeur</p>
+      <h1>Matéo <strong>Grossi</strong></h1>
+    </div>
+  </main>
+
+</body>
+</html>
