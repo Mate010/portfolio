@@ -16,17 +16,10 @@
   --muted: #6a675f;
   --accent: #985a06;
   --accent-hover: #7d4a04;
-  --accent-ink: #ffffff;
 
   --header-bg: rgba(246, 245, 242, 0.85);
   --hover-bg: rgba(0, 0, 0, 0.05);
   --shadow: 0 14px 34px rgba(30, 25, 15, 0.12);
-  --placeholder-from: #efede8;
-  --placeholder-to: #e4e1da;
-  --lang-c-bg: rgba(60, 80, 210, 0.1);
-  --lang-c-text: #3446b8;
-  --lang-cpp-bg: rgba(190, 50, 110, 0.1);
-  --lang-cpp-text: #a52a63;
 
   --radius: 12px;
   --maxw: 1200px;
@@ -55,17 +48,10 @@
   --muted: #9d9da6;
   --accent: #f0b54a;
   --accent-hover: #f6c76f;
-  --accent-ink: #1a1408;
 
   --header-bg: rgba(14, 14, 16, 0.85);
   --hover-bg: rgba(255, 255, 255, 0.07);
   --shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
-  --placeholder-from: #1a1a20;
-  --placeholder-to: #26262e;
-  --lang-c-bg: rgba(110, 130, 255, 0.15);
-  --lang-c-text: #a9b4ff;
-  --lang-cpp-bg: rgba(240, 90, 150, 0.15);
-  --lang-cpp-text: #f6a3c6;
 }
 
 /* Sans JavaScript : on suit le thème du système */
@@ -83,17 +69,10 @@
     --muted: #9d9da6;
     --accent: #f0b54a;
     --accent-hover: #f6c76f;
-    --accent-ink: #1a1408;
 
     --header-bg: rgba(14, 14, 16, 0.85);
     --hover-bg: rgba(255, 255, 255, 0.07);
     --shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
-    --placeholder-from: #1a1a20;
-    --placeholder-to: #26262e;
-    --lang-c-bg: rgba(110, 130, 255, 0.15);
-    --lang-c-text: #a9b4ff;
-    --lang-cpp-bg: rgba(240, 90, 150, 0.15);
-    --lang-cpp-text: #f6a3c6;
   }
 }
 
@@ -124,6 +103,13 @@ img {
 
 a {
   color: inherit;
+}
+
+/* Langue : chaque texte existe en français et en anglais, seule la langue
+   choisie (attribut data-lang sur <html>) est affichée */
+html[data-lang="fr"] [data-lang="en"],
+html[data-lang="en"] [data-lang="fr"] {
+  display: none !important;
 }
 
 :focus-visible {
@@ -194,21 +180,46 @@ a {
 .site-nav a {
   display: block;
   padding: 8px 16px;
-  border-radius: 999px;
   color: var(--muted);
   font-weight: 600;
-  text-decoration: none;
-  transition: color 0.2s, background-color 0.2s;
+  text-decoration: underline 2px transparent;
+  text-underline-offset: 8px;
+  transition: color 0.2s, text-decoration-color 0.2s;
 }
 
 .site-nav a:hover {
   color: var(--text);
-  background: var(--hover-bg);
+  text-decoration-color: var(--border-hover);
 }
 
+/* Onglet actif : souligné de la couleur du texte (blanc en thème sombre) */
 .site-nav a[aria-current="page"] {
-  color: var(--accent-ink);
-  background: var(--accent);
+  color: var(--text);
+  text-decoration-color: var(--text);
+}
+
+/* Avec JavaScript, le soulignement de l'onglet actif est un trait séparé
+   qui glisse depuis l'onglet de la page précédente (voir main.js) */
+.site-nav ul {
+  position: relative;
+}
+
+.nav-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text);
+  pointer-events: none;
+}
+
+.nav-indicator.is-animated {
+  transition: transform 0.4s ease, width 0.4s ease;
+}
+
+.js .site-nav a[aria-current="page"] {
+  text-decoration-color: transparent;
 }
 
 .header-tools {
@@ -218,6 +229,7 @@ a {
   gap: 8px;
 }
 
+.lang-toggle,
 .theme-toggle,
 .nav-toggle {
   display: inline-flex;
@@ -234,19 +246,41 @@ a {
   transition: border-color 0.2s, background-color 0.2s;
 }
 
+.lang-toggle:hover,
 .theme-toggle:hover,
 .nav-toggle:hover {
   border-color: var(--border-hover);
   background: var(--hover-bg);
 }
 
-/* Le bouton de thème n'a de sens qu'avec JavaScript */
+/* Les boutons de langue et de thème n'ont de sens qu'avec JavaScript */
+.lang-toggle,
 .theme-toggle {
   display: none;
 }
 
+.js .lang-toggle,
 .js .theme-toggle {
   display: inline-flex;
+}
+
+/* Bouton FR / EN : la langue active est en couleur normale, l'autre est atténuée */
+.lang-toggle {
+  width: auto;
+  gap: 6px;
+  padding: 0 10px;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.lang-opt {
+  color: var(--muted);
+}
+
+html[data-lang="fr"] .lang-opt[data-opt="fr"],
+html[data-lang="en"] .lang-opt[data-opt="en"] {
+  color: var(--text);
 }
 
 /* Soleil en thème sombre (passer au clair), lune en thème clair */
@@ -319,42 +353,20 @@ a {
     padding: 12px 16px;
     border-radius: 10px;
   }
+
+  /* Menu mobile vertical : soulignement classique, sans trait glissant */
+  .nav-indicator {
+    display: none;
+  }
+
+  .js .site-nav a[aria-current="page"] {
+    text-decoration-color: var(--text);
+  }
 }
 
 /* --------------------------------------------------------------------------
    Boutons et liens
    -------------------------------------------------------------------------- */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 11px 22px;
-  border: 1px solid var(--border-hover);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text);
-  font-weight: 700;
-  text-decoration: none;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
-}
-
-.btn:hover {
-  background: var(--surface-2);
-  border-color: var(--muted);
-}
-
-.btn-primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-
-.btn-primary:hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-}
 
 .link-arrow {
   display: inline-flex;
@@ -379,6 +391,19 @@ a {
    Accueil : vidéo plein écran
    -------------------------------------------------------------------------- */
 
+/* Accueil, 3D et CV : barre de défilement masquée, le défilement reste possible */
+html:has(body.home),
+html:has(body.page-3d),
+html:has(body.page-cv) {
+  scrollbar-width: none;
+}
+
+html:has(body.home)::-webkit-scrollbar,
+html:has(body.page-3d)::-webkit-scrollbar,
+html:has(body.page-cv)::-webkit-scrollbar {
+  display: none;
+}
+
 .home .site-header {
   position: fixed;
   inset: 0 0 auto;
@@ -392,6 +417,7 @@ a {
   color: rgba(255, 255, 255, 0.82);
 }
 
+.home .lang-toggle,
 .home .theme-toggle,
 .home .nav-toggle {
   border-color: rgba(255, 255, 255, 0.3);
@@ -403,35 +429,12 @@ a {
   z-index: -2;
   overflow: hidden;
   background: #000;
-  container-type: size;
 }
 
-/* La vidéo est au format 16:9 avec des bandes noires intégrées (image ≈ 2.29:1).
-   On dimensionne le lecteur pour que seule l'image couvre l'écran. */
-.hero-bg img,
-.hero-bg iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: max(100cqw, 100cqh * 2.29);
-  height: calc(max(100cqw, 100cqh * 2.29) * 0.5625);
-  max-width: none;
-  border: 0;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.hero-bg img {
+.hero-bg video {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-}
-
-.hero-bg iframe {
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-.hero-bg.is-playing iframe {
-  opacity: 1;
 }
 
 /* Assombrit surtout le bas à gauche, là où se trouve le texte */
@@ -458,7 +461,7 @@ a {
 
 .hero-kicker {
   margin: 0 0 14px;
-  color: var(--accent);
+  color: #fff;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -482,7 +485,26 @@ a {
    Pages intérieures
    -------------------------------------------------------------------------- */
 
+/* Pages 3D, Programmation et CV : pas de couleur d'accent dans le contenu,
+   on utilise la couleur du texte (blanc en thème sombre, noir en thème clair) */
+.page-3d main,
+.page-code main,
+.page-cv main {
+  --accent: var(--text);
+  --accent-hover: var(--text);
+}
+
+/* Pied de page collé en bas de l'écran, même quand la page est courte */
+body:not(.home) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
 .page {
+  flex: 1 0 auto;
+  width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
   padding: 56px var(--gutter) 88px;
@@ -525,7 +547,7 @@ a {
    -------------------------------------------------------------------------- */
 
 .masonry {
-  column-count: 3;
+  column-count: 2;
   column-gap: 24px;
 }
 
@@ -534,7 +556,53 @@ a {
   margin: 0 0 24px;
 }
 
+/* Sur grand écran, la galerie tient dans la hauteur de la fenêtre, sans défiler :
+   SpaceDan occupe les deux premières colonnes de la 1re ligne, les 4 autres projets
+   remplissent le reste.
+   Images et vidéos sont recadrées (object-fit: cover) pour remplir chaque case. */
+@media (min-width: 1001px) and (min-height: 600px) {
+  .page-3d {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .page-3d .page {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .page-3d .masonry {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .page-3d .work {
+    min-height: 0;
+    margin: 0;
+  }
+
+  .page-3d .work:first-child {
+    grid-column: span 2;
+  }
+
+  .page-3d .work-link {
+    height: 100%;
+  }
+
+  .page-3d .work-media {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+}
+
 .work-link {
+  position: relative;
   display: block;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -556,7 +624,6 @@ a {
   overflow: hidden;
   aspect-ratio: var(--ratio, 16 / 9);
   background: #000;
-  container-type: size;
 }
 
 .work-media img {
@@ -571,115 +638,43 @@ a {
   transform: scale(1.03);
 }
 
-/* Le lecteur vidéo (YouTube / Vimeo) recouvre la carte comme un object-fit: cover.
-   --video-ratio = largeur / hauteur de la vidéo, en décimal. */
-.work-media iframe {
+.work-media video {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: max(100cqw, 100cqh * var(--video-ratio, 1.7778));
-  height: max(100cqh, 100cqw / var(--video-ratio, 1.7778));
-  border: 0;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, center);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.25s ease;
 }
 
-.work-media.is-playing iframe {
+.work-media.is-playing video {
   opacity: 1;
 }
 
-.video-badge {
+/* Dégradé sombre en bas de la carte, pour la lisibilité du titre */
+.work-media::after {
+  content: "";
   position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px 4px 8px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 45%);
+  pointer-events: none;
+}
+
+.work-title {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 16px;
+  margin: 0;
   color: #fff;
-  font-size: 0.78rem;
-  font-weight: 700;
-  transition: opacity 0.3s;
-}
-
-.video-badge .icon {
-  width: 12px;
-  height: 12px;
-}
-
-.work-media.is-playing .video-badge {
-  opacity: 0;
-}
-
-.work-media.is-empty {
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--placeholder-from), var(--placeholder-to));
-}
-
-.placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 0.95rem;
-  font-weight: 700;
-}
-
-.placeholder .icon {
-  width: 40px;
-  height: 40px;
-  opacity: 0.6;
-}
-
-.work-body {
-  padding: 16px 18px 18px;
-}
-
-.work-body h2 {
-  margin: 0;
   font-family: var(--font-heading);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  line-height: 1.35;
-}
-
-.work-meta {
-  margin: 4px 0 8px;
-  color: var(--muted);
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.work-body p:not(.work-meta) {
-  margin: 0 0 12px;
-  color: var(--text-soft);
-  font-size: 1rem;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.tags li {
-  padding: 3px 10px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface-2);
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 600;
+  line-height: 1.3;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* --------------------------------------------------------------------------
@@ -713,38 +708,11 @@ a {
   padding: 24px 24px 20px;
 }
 
-.code-card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
 .code-card h2 {
-  margin: 0;
+  margin: 0 0 12px;
   font-family: var(--font-heading);
   font-size: 1.35rem;
   font-weight: 700;
-}
-
-.lang {
-  flex: none;
-  padding: 3px 12px;
-  border-radius: 999px;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.lang-c {
-  background: var(--lang-c-bg);
-  color: var(--lang-c-text);
-}
-
-.lang-cpp {
-  background: var(--lang-cpp-bg);
-  color: var(--lang-cpp-text);
 }
 
 .code-card p {
@@ -762,26 +730,14 @@ a {
 
 .code-card-foot {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px 16px;
+  justify-content: center;
   padding: 14px 24px;
   border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 0.925rem;
 }
 
 /* --------------------------------------------------------------------------
    Page CV & Contact
    -------------------------------------------------------------------------- */
-
-.page-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
 
 .cv-layout {
   display: grid;
@@ -834,8 +790,7 @@ a {
   list-style: none;
 }
 
-.contact-list a,
-.contact-list .contact-item {
+.contact-list a {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1039,10 +994,6 @@ a {
    -------------------------------------------------------------------------- */
 
 @media (max-width: 1000px) {
-  .masonry {
-    column-count: 2;
-  }
-
   .cv-layout {
     grid-template-columns: 1fr;
   }
@@ -1087,13 +1038,6 @@ a {
 
   .code-card-foot {
     padding: 14px 18px;
-  }
-}
-
-/* Pas de survol sur écran tactile : pas de vidéo, donc pas de badge */
-@media (hover: none) {
-  .video-badge {
-    display: none;
   }
 }
 

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CV & Contact — Matéo Grossi</title>
-  <meta name="description" content="CV de Matéo Grossi, artiste 3D et développeur : expériences, formation, compétences et coordonnées.">
+  <title data-en="CV & Contact — Matéo Grossi">CV & Contact — Matéo Grossi</title>
+  <meta name="description" data-en-content="CV of Matéo Grossi, 3D artist and developer: experience, education, skills and contact." content="CV de Matéo Grossi, artiste 3D et développeur : expériences, formation, compétences et coordonnées.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,30 +12,39 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <script>
     (function () {
-      var root = document.documentElement, theme = null;
+      var root = document.documentElement, theme = null, lang = null;
       root.classList.add('js');
-      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      try { theme = localStorage.getItem('theme'); lang = localStorage.getItem('lang'); } catch (e) {}
       if (theme !== 'light' && theme !== 'dark') {
         theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
+      if (lang !== 'fr' && lang !== 'en') {
+        lang = /^fr\b/i.test(navigator.language || '') ? 'fr' : 'en';
+      }
       root.setAttribute('data-theme', theme);
+      root.setAttribute('data-lang', lang);
+      root.lang = lang;
     })();
   </script>
   <script src="assets/js/main.js" defer></script>
 </head>
-<body>
+<body class="page-cv">
 
   <header class="site-header">
     <div class="header-inner">
-      <nav id="site-nav" class="site-nav" aria-label="Navigation principale">
+      <nav id="site-nav" class="site-nav" aria-label="Navigation principale" data-en-aria-label="Main navigation">
         <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="3d.html">Projets 3D</a></li>
-          <li><a href="code.html">Code</a></li>
+          <li><a href="index.html"><span data-lang="fr">Accueil</span><span data-lang="en">Home</span></a></li>
+          <li><a href="3d.html"><span data-lang="fr">Projets 3D</span><span data-lang="en">3D Projects</span></a></li>
+          <li><a href="code.html"><span data-lang="fr">Programmation</span><span data-lang="en">Programming</span></a></li>
           <li><a href="cv.html" aria-current="page">CV & Contact</a></li>
         </ul>
       </nav>
       <div class="header-tools">
+        <button class="lang-toggle" type="button" aria-label="Changer de langue" data-en-aria-label="Change language">
+          <span class="lang-opt" data-opt="fr">FR</span>
+          <span class="lang-opt" data-opt="en">EN</span>
+        </button>
         <button class="theme-toggle" type="button" aria-label="Changer de thème">
           <svg class="icon icon-stroke icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
           <svg class="icon icon-stroke icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -49,50 +58,18 @@
 
   <main class="page">
     <header class="page-head">
-      <p class="eyebrow">Curriculum vitæ</p>
       <h1>CV & Contact</h1>
-      <p>Artiste 3D formé à L'École des Nouvelles Images et à MoPA, passé par la production en studio, puis par la programmation à 42&nbsp;Paris. N'hésitez pas à me contacter.</p>
-      <div class="page-actions">
-        <a class="btn btn-primary" href="assets/cv/CV-Mateo-Grossi.pdf" download>
-          <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
-          Télécharger le CV (PDF)
-        </a>
-        <a class="btn" href="mailto:mateo.grossi@gmail.com">
-          <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-          M'écrire
-        </a>
-      </div>
+      <a class="link-arrow" href="mailto:mateo.grossi@gmail.com">
+        mateo.grossi@gmail.com
+        <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
     </header>
 
     <div class="cv-layout">
 
       <aside class="cv-aside">
-        <section class="panel" aria-labelledby="contact-title">
-          <h2 id="contact-title">Coordonnées</h2>
-          <ul class="contact-list">
-            <li>
-              <a href="tel:+33651997159">
-                <span class="icon-box"><svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></span>
-                <span class="contact-text"><span class="contact-label">Téléphone</span><span class="contact-value">+33 6 51 99 71 59</span></span>
-              </a>
-            </li>
-            <li>
-              <a href="mailto:mateo.grossi@gmail.com">
-                <span class="icon-box"><svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
-                <span class="contact-text"><span class="contact-label">E-mail</span><span class="contact-value">mateo.grossi@gmail.com</span></span>
-              </a>
-            </li>
-            <li>
-              <span class="contact-item">
-                <span class="icon-box"><svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-                <span class="contact-text"><span class="contact-label">Localisation</span><span class="contact-value">Paris, France</span></span>
-              </span>
-            </li>
-          </ul>
-        </section>
-
         <section class="panel" aria-labelledby="links-title">
-          <h2 id="links-title">Liens</h2>
+          <h2 id="links-title"><span data-lang="fr">Liens</span><span data-lang="en">Links</span></h2>
           <ul class="contact-list">
             <li>
               <a href="https://github.com/Mate010" target="_blank" rel="noopener">
@@ -115,94 +92,94 @@
             <li>
               <a href="https://vimeo.com/926079031" target="_blank" rel="noopener">
                 <span class="icon-box"><svg class="icon icon-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.9765 6.4168c-.105 2.338-1.739 5.5429-4.894 9.6088-3.2679 4.247-6.0258 6.3699-8.2898 6.3699-1.409 0-2.578-1.294-3.553-3.881l-1.9179-7.1138c-.719-2.584-1.488-3.878-2.312-3.878-.179 0-.806.378-1.8809 1.132l-1.129-1.457a315.06 315.06 0 003.501-3.1279c1.579-1.368 2.765-2.085 3.5539-2.159 1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.5069.5389 2.45 1.1309 3.674 1.7759 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.614-2.061-.574 0-1.167.121-1.777.391 1.186-3.8679 3.434-5.7568 6.7619-5.6368 2.4729.06 3.6279 1.664 3.4929 4.7969z"/></svg></span>
-                <span class="contact-text"><span class="contact-label">Demoreel</span><span class="contact-value">Showreel 2024 sur Vimeo</span></span>
+                <span class="contact-text"><span class="contact-label">Vimeo</span><span class="contact-value">Showreel</span></span>
               </a>
             </li>
           </ul>
         </section>
 
         <section class="panel" aria-labelledby="languages-title">
-          <h2 id="languages-title">Langues</h2>
+          <h2 id="languages-title"><span data-lang="fr">Langues</span><span data-lang="en">Languages</span></h2>
           <ul class="lang-list">
-            <li><strong>Français</strong> <span>Langue maternelle</span></li>
-            <li><strong>Anglais</strong> <span>Avancé</span></li>
+            <li><strong><span data-lang="fr">Français</span><span data-lang="en">French</span></strong> <span><span data-lang="fr">Langue maternelle</span><span data-lang="en">Native</span></span></li>
+            <li><strong><span data-lang="fr">Anglais</span><span data-lang="en">English</span></strong> <span><span data-lang="fr">Avancé</span><span data-lang="en">Advanced</span></span></li>
           </ul>
         </section>
       </aside>
 
       <div class="cv-main">
         <section class="panel" aria-labelledby="experience-title">
-          <h2 id="experience-title">Expérience</h2>
+          <h2 id="experience-title"><span data-lang="fr">Expérience</span><span data-lang="en">Experience</span></h2>
           <ol class="timeline">
             <li>
-              <span class="tl-date">Juillet – août 2024</span>
+              <span class="tl-date"><span data-lang="fr">Juillet – Décembre 2024</span><span data-lang="en">July – December 2024</span></span>
               <h3 class="tl-title">Freelance <span class="tl-place">— Paris</span></h3>
             </li>
             <li>
-              <span class="tl-date">Juillet – août 2023</span>
+              <span class="tl-date"><span data-lang="fr">Juillet – août 2023</span><span data-lang="en">July – August 2023</span></span>
               <h3 class="tl-title">Loops Creative Studio <span class="tl-place">— Angoulême</span></h3>
-              <p class="tl-role">Stage — Generalist / Realtime Artist</p>
-              <p class="tl-desc">Layout, lighting, texturing et modélisation pour un court-métrage.</p>
+              <p class="tl-role"><span data-lang="fr">Stage</span><span data-lang="en">Internship</span> — Generalist / Realtime Artist</p>
+              <p class="tl-desc"><span data-lang="fr">Layout, lighting, texturing et modélisation pour un court-métrage.</span><span data-lang="en">Layout, lighting, texturing and modeling for a short film.</span></p>
             </li>
             <li>
-              <span class="tl-date">Août 2023</span>
+              <span class="tl-date"><span data-lang="fr">Août 2023</span><span data-lang="en">August 2023</span></span>
               <h3 class="tl-title">2 Minutes <span class="tl-place">— Angoulême</span></h3>
-              <p class="tl-role">Stage — Modeleur 3D</p>
-              <p class="tl-desc">Modélisation pour le long-métrage <em>Les Légendaires</em>.</p>
+              <p class="tl-role"><span data-lang="fr">Stage — Modeleur 3D</span><span data-lang="en">Internship — 3D Modeler</span></p>
+              <p class="tl-desc"><span data-lang="fr">Modélisation pour le long-métrage <em>Les Légendaires</em>.</span><span data-lang="en">Modeling for the feature film <em>Les Légendaires</em>.</span></p>
             </li>
           </ol>
         </section>
 
         <section class="panel" aria-labelledby="education-title">
-          <h2 id="education-title">Formation</h2>
+          <h2 id="education-title"><span data-lang="fr">Formation</span><span data-lang="en">Education</span></h2>
           <ol class="timeline">
             <li>
               <span class="tl-date">2025</span>
               <h3 class="tl-title">42 Paris <span class="tl-place">— Paris</span></h3>
-              <p class="tl-desc">École de programmation : projets en C et C++.</p>
+              <p class="tl-desc"><span data-lang="fr">École de programmation.</span><span data-lang="en">Programming school.</span></p>
             </li>
             <li>
               <span class="tl-date">2022 – 2024</span>
               <h3 class="tl-title">MoPA <span class="tl-place">— Arles</span></h3>
-              <p class="tl-role">Master 2 en conception, production et animation 3D</p>
-              <p class="tl-desc">Film de fin d'études : <em>SpaceDan</em>, entièrement réalisé sous Unreal Engine. Apprentissage de l'animation temps réel.</p>
+              <p class="tl-role"><span data-lang="fr">Master 2 en conception, production et animation 3D</span><span data-lang="en">Master&#39;s degree in 3D design, production and animation</span></p>
+              <p class="tl-desc"><span data-lang="fr">Film de fin d&#39;études : <em>SpaceDan</em>, entièrement réalisé sous Unreal Engine. Apprentissage de l&#39;animation temps réel.</span><span data-lang="en">Graduation film: <em>SpaceDan</em>, made entirely in Unreal Engine. Learned real-time animation.</span></p>
             </li>
             <li>
               <span class="tl-date">2019 – 2022</span>
               <h3 class="tl-title">L'École des Nouvelles Images <span class="tl-place">— Avignon</span></h3>
-              <p class="tl-desc">Toutes les étapes de la fabrication d'un film d'animation 3D, et participation à différents projets étudiants.</p>
+              <p class="tl-desc"><span data-lang="fr">Toutes les étapes de la fabrication d&#39;un film d&#39;animation 3D, et participation à différents projets étudiants.</span><span data-lang="en">Every stage of 3D animated filmmaking, and work on various student projects.</span></p>
             </li>
             <li>
               <span class="tl-date">2018 – 2019</span>
               <h3 class="tl-title">L'Atelier de Sèvres <span class="tl-place">— Paris</span></h3>
-              <p class="tl-role">Année préparatoire en animation</p>
-              <p class="tl-desc">Dessin intensif, bases de l'animation et du storytelling, réalisation d'un court-métrage 2D.</p>
+              <p class="tl-role"><span data-lang="fr">Année préparatoire en animation</span><span data-lang="en">Animation preparatory year</span></p>
+              <p class="tl-desc"><span data-lang="fr">Dessin intensif, bases de l&#39;animation et du storytelling, réalisation d&#39;un court-métrage 2D.</span><span data-lang="en">Intensive drawing, basics of animation and storytelling, and a 2D short film.</span></p>
             </li>
             <li>
               <span class="tl-date">2017 – 2018</span>
               <h3 class="tl-title">Gué à Tresmes <span class="tl-place">— Seine-et-Marne</span></h3>
-              <p class="tl-desc">Baccalauréat STD2A.</p>
+              <p class="tl-desc"><span data-lang="fr">Baccalauréat STD2A.</span><span data-lang="en">Baccalauréat STD2A (French high-school diploma in applied arts and design).</span></p>
             </li>
           </ol>
         </section>
 
         <section class="panel" aria-labelledby="skills-title">
-          <h2 id="skills-title">Compétences</h2>
+          <h2 id="skills-title"><span data-lang="fr">Compétences</span><span data-lang="en">Skills</span></h2>
           <div class="skills-grid">
             <div>
               <h3>3D</h3>
               <ul class="chips">
-                <li>Animation 3D</li>
-                <li>Modélisation</li>
-                <li>Sculpture</li>
+                <li><span data-lang="fr">Animation 3D</span><span data-lang="en">3D Animation</span></li>
+                <li><span data-lang="fr">Modélisation</span><span data-lang="en">Modeling</span></li>
+                <li><span data-lang="fr">Sculpture</span><span data-lang="en">Sculpting</span></li>
                 <li>Texturing</li>
                 <li>Lighting</li>
                 <li>Storyboard</li>
-                <li>Rigging (bases)</li>
+                <li>Rigging <span data-lang="fr">(bases)</span><span data-lang="en">(basics)</span></li>
               </ul>
             </div>
             <div>
-              <h3>Logiciels</h3>
+              <h3><span data-lang="fr">Logiciels</span><span data-lang="en">Software</span></h3>
               <ul class="chips">
                 <li>Maya</li>
                 <li>Arnold</li>
@@ -216,13 +193,13 @@
               </ul>
             </div>
             <div>
-              <h3>Code & outils</h3>
+              <h3><span data-lang="fr">Code & outils</span><span data-lang="en">Code & tools</span></h3>
               <ul class="chips">
                 <li>C</li>
                 <li>C++</li>
-                <li>HTML/CSS (bases)</li>
-                <li>JavaScript (bases)</li>
-                <li>Python (bases)</li>
+                <li>HTML/CSS <span data-lang="fr">(bases)</span><span data-lang="en">(basics)</span></li>
+                <li>JavaScript <span data-lang="fr">(bases)</span><span data-lang="en">(basics)</span></li>
+                <li>Python <span data-lang="fr">(bases)</span><span data-lang="en">(basics)</span></li>
                 <li>Git</li>
                 <li>GitHub</li>
               </ul>

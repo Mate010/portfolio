@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projets code — Matéo Grossi</title>
-  <meta name="description" content="Projets de développement de Matéo Grossi réalisés à 42 Paris : serveur IRC en C++, ray tracer, shell Unix et visualiseur de terrain en C.">
+  <title data-en="Programming — Matéo Grossi">Programmation — Matéo Grossi</title>
+  <meta name="description" data-en-content="Programming projects by Matéo Grossi from 42 Paris: an IRC server in C++, a ray tracer, a Unix shell and a terrain viewer in C." content="Projets de développement de Matéo Grossi réalisés à 42 Paris : serveur IRC en C++, ray tracer, shell Unix et visualiseur de terrain en C.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,30 +12,39 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <script>
     (function () {
-      var root = document.documentElement, theme = null;
+      var root = document.documentElement, theme = null, lang = null;
       root.classList.add('js');
-      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      try { theme = localStorage.getItem('theme'); lang = localStorage.getItem('lang'); } catch (e) {}
       if (theme !== 'light' && theme !== 'dark') {
         theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
+      if (lang !== 'fr' && lang !== 'en') {
+        lang = /^fr\b/i.test(navigator.language || '') ? 'fr' : 'en';
+      }
       root.setAttribute('data-theme', theme);
+      root.setAttribute('data-lang', lang);
+      root.lang = lang;
     })();
   </script>
   <script src="assets/js/main.js" defer></script>
 </head>
-<body>
+<body class="page-code">
 
   <header class="site-header">
     <div class="header-inner">
-      <nav id="site-nav" class="site-nav" aria-label="Navigation principale">
+      <nav id="site-nav" class="site-nav" aria-label="Navigation principale" data-en-aria-label="Main navigation">
         <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="3d.html">Projets 3D</a></li>
-          <li><a href="code.html" aria-current="page">Code</a></li>
+          <li><a href="index.html"><span data-lang="fr">Accueil</span><span data-lang="en">Home</span></a></li>
+          <li><a href="3d.html"><span data-lang="fr">Projets 3D</span><span data-lang="en">3D Projects</span></a></li>
+          <li><a href="code.html" aria-current="page"><span data-lang="fr">Programmation</span><span data-lang="en">Programming</span></a></li>
           <li><a href="cv.html">CV & Contact</a></li>
         </ul>
       </nav>
       <div class="header-tools">
+        <button class="lang-toggle" type="button" aria-label="Changer de langue" data-en-aria-label="Change language">
+          <span class="lang-opt" data-opt="fr">FR</span>
+          <span class="lang-opt" data-opt="en">EN</span>
+        </button>
         <button class="theme-toggle" type="button" aria-label="Changer de thème">
           <svg class="icon icon-stroke icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
           <svg class="icon icon-stroke icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -49,11 +58,9 @@
 
   <main class="page">
     <header class="page-head">
-      <p class="eyebrow">42 Paris</p>
-      <h1>Projets code</h1>
-      <p>Projets réalisés dans le cursus de 42 Paris, en C et en C++ : programmation système, réseau et rendu graphique.</p>
+      <h1><span data-lang="fr">Programmation</span><span data-lang="en">Programming</span></h1>
       <a class="link-arrow" href="https://github.com/Mate010" target="_blank" rel="noopener">
-        Tous mes dépôts sur GitHub
+        <span data-lang="fr">Tous mes dépôts sur GitHub</span><span data-lang="en">All my repositories on GitHub</span>
         <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
       </a>
     </header>
@@ -62,81 +69,45 @@
 
       <article class="code-card">
         <div class="code-card-body">
-          <div class="code-card-head">
-            <h2>ft_irc</h2>
-            <span class="lang lang-cpp">C++</span>
-          </div>
-          <p>Serveur IRC conforme à la RFC&nbsp;1459. Il accepte plusieurs clients en même temps grâce à des sockets TCP non bloquants et au multiplexage d'entrées/sorties avec <code>epoll</code>. Il gère les canaux et leurs commandes (JOIN, KICK, INVITE, TOPIC, MODE), fonctionne avec le client Irssi ou Netcat, et embarque un bot qui répond aux questions sur les dinosaures.</p>
-          <ul class="tags">
-            <li>Sockets TCP</li>
-            <li>epoll</li>
-            <li>Client / serveur</li>
-            <li>RFC 1459</li>
-          </ul>
+          <h2>ft_irc</h2>
+          <p data-lang="fr">Serveur IRC conforme à la RFC&nbsp;1459. Il accepte plusieurs clients en même temps grâce à des sockets TCP non bloquants et au multiplexage d'entrées/sorties avec <code>epoll</code>. Il gère les canaux et leurs commandes (JOIN, KICK, INVITE, TOPIC, MODE), fonctionne avec le client Irssi ou Netcat, et embarque un bot qui répond aux questions sur les dinosaures.</p>
+          <p data-lang="en">IRC server compliant with RFC&nbsp;1459. It handles several clients at once using non-blocking TCP sockets and I/O multiplexing with <code>epoll</code>. It supports channels and their commands (JOIN, KICK, INVITE, TOPIC, MODE), works with the Irssi client or Netcat, and includes a bot that answers questions about dinosaurs.</p>
         </div>
         <div class="code-card-foot">
-          <span>42 Paris · avec pde-told</span>
-          <a class="link-arrow" href="https://github.com/Mate010/ft_irc" target="_blank" rel="noopener">Voir sur GitHub <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a class="link-arrow" href="https://github.com/Mate010/ft_irc" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
         </div>
       </article>
 
       <article class="code-card">
         <div class="code-card-body">
-          <div class="code-card-head">
-            <h2>MiniRT</h2>
-            <span class="lang lang-c">C</span>
-          </div>
-          <p>Mini ray tracer. Le programme lit une scène décrite dans un fichier <code>.rt</code> (caméra, lumières, sphères, plans, cylindres), lance un rayon par pixel pour trouver l'objet le plus proche, puis calcule l'éclairage ambiant, la lumière ponctuelle et les ombres portées. L'image est affichée avec la MiniLibX.</p>
-          <ul class="tags">
-            <li>Ray tracing</li>
-            <li>Géométrie 3D</li>
-            <li>Parsing</li>
-            <li>MiniLibX</li>
-          </ul>
+          <h2>MiniRT</h2>
+          <p data-lang="fr">Mini ray tracer. Le programme lit une scène décrite dans un fichier <code>.rt</code> (caméra, lumières, sphères, plans, cylindres), lance un rayon par pixel pour trouver l'objet le plus proche, puis calcule l'éclairage ambiant, la lumière ponctuelle et les ombres portées. L'image est affichée avec la MiniLibX.</p>
+          <p data-lang="en">A small ray tracer. The program reads a scene described in a <code>.rt</code> file (camera, lights, spheres, planes, cylinders), casts one ray per pixel to find the closest object, then computes ambient light, point light and cast shadows. The image is displayed with the MiniLibX.</p>
         </div>
         <div class="code-card-foot">
-          <span>42 Paris · avec mamakaro</span>
-          <a class="link-arrow" href="https://github.com/Mate010/MiniRT" target="_blank" rel="noopener">Voir sur GitHub <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a class="link-arrow" href="https://github.com/Mate010/MiniRT" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
         </div>
       </article>
 
       <article class="code-card">
         <div class="code-card-body">
-          <div class="code-card-head">
-            <h2>Minishell</h2>
-            <span class="lang lang-c">C</span>
-          </div>
-          <p>Shell Unix simplifié, inspiré de bash. La saisie est lue avec readline, découpée en tokens, puis les variables d'environnement sont développées en respectant les quotes. Les commandes s'exécutent avec pipes, redirections et heredocs. Les builtins (echo, cd, pwd, export, unset, env, exit) et les signaux Ctrl-C, Ctrl-D et Ctrl-\ sont gérés.</p>
-          <ul class="tags">
-            <li>fork / execve</li>
-            <li>Pipes &amp; dup2</li>
-            <li>Parsing</li>
-            <li>Signaux</li>
-          </ul>
+          <h2>Minishell</h2>
+          <p data-lang="fr">Shell Unix simplifié, inspiré de bash. La saisie est lue avec readline, découpée en tokens, puis les variables d'environnement sont développées en respectant les quotes. Les commandes s'exécutent avec pipes, redirections et heredocs. Les builtins (echo, cd, pwd, export, unset, env, exit) et les signaux Ctrl-C, Ctrl-D et Ctrl-\ sont gérés.</p>
+          <p data-lang="en">A simplified Unix shell inspired by bash. Input is read with readline and split into tokens, then environment variables are expanded while respecting quotes. Commands run with pipes, redirections and heredocs. Builtins (echo, cd, pwd, export, unset, env, exit) and the Ctrl-C, Ctrl-D and Ctrl-\ signals are handled.</p>
         </div>
         <div class="code-card-foot">
-          <span>42 Paris</span>
-          <a class="link-arrow" href="https://github.com/Mate010/Minishell" target="_blank" rel="noopener">Voir sur GitHub <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a class="link-arrow" href="https://github.com/Mate010/Minishell" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
         </div>
       </article>
 
       <article class="code-card">
         <div class="code-card-body">
-          <div class="code-card-head">
-            <h2>FdF</h2>
-            <span class="lang lang-c">C</span>
-          </div>
-          <p>Visualiseur de relief en fil de fer. Le programme lit une carte où chaque nombre est une altitude, puis la projette en vue isométrique avec la MiniLibX. Au clavier, on peut zoomer, déplacer la carte et accentuer ou aplatir le relief.</p>
-          <ul class="tags">
-            <li>Projection isométrique</li>
-            <li>Graphisme 2D</li>
-            <li>Événements clavier</li>
-            <li>MiniLibX</li>
-          </ul>
+          <h2>FdF</h2>
+          <p data-lang="fr">Visualiseur de relief en fil de fer. Le programme lit une carte où chaque nombre est une altitude, puis la projette en vue isométrique avec la MiniLibX. Au clavier, on peut zoomer, déplacer la carte et accentuer ou aplatir le relief.</p>
+          <p data-lang="en">A wireframe terrain viewer. The program reads a map where each number is an altitude and projects it in isometric view with the MiniLibX. With the keyboard you can zoom, move the map and raise or flatten the terrain.</p>
         </div>
         <div class="code-card-foot">
-          <span>42 Paris · projet solo</span>
-          <a class="link-arrow" href="https://github.com/Mate010/fdf" target="_blank" rel="noopener">Voir sur GitHub <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <a class="link-arrow" href="https://github.com/Mate010/fdf" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
         </div>
       </article>
 

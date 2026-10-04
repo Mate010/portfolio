@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Matéo Grossi — Artiste 3D & développeur</title>
-  <meta name="description" content="Portfolio de Matéo Grossi : projets 3D (modélisation, texturing, lighting, Unreal Engine) et projets de développement en C/C++ réalisés à 42 Paris.">
+  <title data-en="Matéo Grossi — 3D Artist &amp; Developer">Matéo Grossi — Artiste 3D &amp; développeur</title>
+  <meta name="description" data-en-content="Portfolio of Matéo Grossi: 3D projects (modeling, texturing, lighting, Unreal Engine) and C/C++ programming projects from 42 Paris." content="Portfolio de Matéo Grossi : projets 3D (modélisation, texturing, lighting, Unreal Engine) et projets de développement en C/C++ réalisés à 42 Paris.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +12,18 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <script>
     (function () {
-      var root = document.documentElement, theme = null;
+      var root = document.documentElement, theme = null, lang = null;
       root.classList.add('js');
-      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      try { theme = localStorage.getItem('theme'); lang = localStorage.getItem('lang'); } catch (e) {}
       if (theme !== 'light' && theme !== 'dark') {
         theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
+      if (lang !== 'fr' && lang !== 'en') {
+        lang = /^fr\b/i.test(navigator.language || '') ? 'fr' : 'en';
+      }
       root.setAttribute('data-theme', theme);
+      root.setAttribute('data-lang', lang);
+      root.lang = lang;
     })();
   </script>
   <script src="assets/js/main.js" defer></script>
@@ -27,15 +32,19 @@
 
   <header class="site-header">
     <div class="header-inner">
-      <nav id="site-nav" class="site-nav" aria-label="Navigation principale">
+      <nav id="site-nav" class="site-nav" aria-label="Navigation principale" data-en-aria-label="Main navigation">
         <ul>
-          <li><a href="index.html" aria-current="page">Accueil</a></li>
-          <li><a href="3d.html">Projets 3D</a></li>
-          <li><a href="code.html">Code</a></li>
+          <li><a href="index.html" aria-current="page"><span data-lang="fr">Accueil</span><span data-lang="en">Home</span></a></li>
+          <li><a href="3d.html"><span data-lang="fr">Projets 3D</span><span data-lang="en">3D Projects</span></a></li>
+          <li><a href="code.html"><span data-lang="fr">Programmation</span><span data-lang="en">Programming</span></a></li>
           <li><a href="cv.html">CV & Contact</a></li>
         </ul>
       </nav>
       <div class="header-tools">
+        <button class="lang-toggle" type="button" aria-label="Changer de langue" data-en-aria-label="Change language">
+          <span class="lang-opt" data-opt="fr">FR</span>
+          <span class="lang-opt" data-opt="en">EN</span>
+        </button>
         <button class="theme-toggle" type="button" aria-label="Changer de thème">
           <svg class="icon icon-stroke icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
           <svg class="icon icon-stroke icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -47,16 +56,15 @@
     </div>
   </header>
 
-  <!-- Vidéo d'arrière-plan : Showreel 2024 (YouTube), affichée de 5 s à 57 s pour masquer les cartons titre -->
-  <div class="hero-bg" data-video="vMgToajT_ak" data-start="5" data-end="57" aria-hidden="true">
-    <img src="assets/img/showreel-poster.jpg" alt="">
-    <div class="hero-player"></div>
+  <!-- Vidéo d'arrière-plan : showreel (assets/video/showreel.mp4) -->
+  <div class="hero-bg" aria-hidden="true">
+    <video src="assets/video/showreel.mp4" poster="assets/img/showreel-poster.jpg" autoplay muted loop playsinline></video>
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
 
   <main class="hero">
     <div class="hero-content">
-      <p class="hero-kicker">Artiste 3D · Développeur</p>
+      <p class="hero-kicker"><span data-lang="fr">Artiste 3D · Développeur</span><span data-lang="en">3D Artist · Developer</span></p>
       <h1>Matéo <strong>Grossi</strong></h1>
     </div>
   </main>

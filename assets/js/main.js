@@ -1,8 +1,23 @@
 (function () {
   'use strict';
 
+  var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // Libellés des boutons, mis à jour par JavaScript selon la langue affichée
+  var LABELS = {
+    fr: { menuOpen: 'Ouvrir le menu', menuClose: 'Fermer le menu', toLight: 'Passer au thème clair', toDark: 'Passer au thème sombre' },
+    en: { menuOpen: 'Open menu', menuClose: 'Close menu', toLight: 'Switch to light mode', toDark: 'Switch to dark mode' }
+  };
+
+  function currentLang() {
+    return root.getAttribute('data-lang') === 'en' ? 'en' : 'fr';
+  }
+
+  function label(key) {
+    return LABELS[currentLang()][key];
+  }
 
   /* ------------------------------------------------------------------------
      Menu mobile
@@ -15,7 +30,71 @@
     toggle.addEventListener('click', function () {
       var open = nav.classList.toggle('is-open');
       toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+      toggle.setAttribute('aria-label', label(open ? 'menuClose' : 'menuOpen'));
+    });
+  }
+
+  /* ------------------------------------------------------------------------
+     Trait sous l'onglet actif : au changement de page, il part de l'onglet
+     de la page précédente et glisse jusqu'à l'onglet de la nouvelle page.
+     ------------------------------------------------------------------------ */
+
+  var repositionIndicator = function () {};
+  var navList = nav && nav.querySelector('ul');
+  var navLinks = navList ? Array.prototype.slice.call(navList.querySelectorAll('a')) : [];
+  var currentLink = navLinks.filter(function (a) {
+    return a.getAttribute('aria-current') === 'page';
+  })[0];
+
+  if (currentLink) {
+    var indicator = document.createElement('span');
+    indicator.className = 'nav-indicator';
+    indicator.setAttribute('aria-hidden', 'true');
+    navList.appendChild(indicator);
+
+    // Le trait prend la largeur du texte du lien, juste en dessous
+    var placeIndicator = function (link) {
+      var range = document.createRange();
+      range.selectNodeContents(link);
+      var text = range.getBoundingClientRect();
+      var list = navList.getBoundingClientRect();
+      indicator.style.width = text.width + 'px';
+      indicator.style.top = (text.bottom - list.top + 6) + 'px';
+      indicator.style.transform = 'translateX(' + (text.left - list.left) + 'px)';
+    };
+
+    var previousHref = null;
+    try {
+      previousHref = sessionStorage.getItem('nav-from');
+      sessionStorage.removeItem('nav-from');
+    } catch (e) { /* stockage indisponible : pas d'animation */ }
+
+    var previousLink = navLinks.filter(function (a) {
+      return a.getAttribute('href') === previousHref;
+    })[0];
+
+    if (previousLink && previousLink !== currentLink && !reduceMotion) {
+      placeIndicator(previousLink);
+      indicator.getBoundingClientRect(); // fixe la position de départ avant d'animer
+      indicator.classList.add('is-animated');
+      requestAnimationFrame(function () { placeIndicator(currentLink); });
+    } else {
+      placeIndicator(currentLink);
+      if (!reduceMotion) indicator.classList.add('is-animated');
+    }
+
+    repositionIndicator = function () { placeIndicator(currentLink); };
+
+    // Les polices web peuvent changer la largeur du texte une fois chargées
+    if (document.fonts) document.fonts.ready.then(repositionIndicator);
+    window.addEventListener('resize', repositionIndicator);
+
+    navLinks.forEach(function (a) {
+      a.addEventListener('click', function () {
+        try {
+          sessionStorage.setItem('nav-from', currentLink.getAttribute('href'));
+        } catch (e) { /* stockage indisponible : pas d'animation */ }
+      });
     });
   }
 
@@ -24,7 +103,6 @@
      Le thème initial est posé dans le <head> (choix enregistré ou système).
      ------------------------------------------------------------------------ */
 
-  var root = document.documentElement;
   var themeToggle = document.querySelector('.theme-toggle');
 
   function storedTheme() {
@@ -38,8 +116,7 @@
   function applyTheme(theme) {
     root.setAttribute('data-theme', theme);
     if (themeToggle) {
-      themeToggle.setAttribute('aria-label',
-        theme === 'dark' ? 'Passer au thème clair' : 'Passer au thème sombre');
+      themeToggle.setAttribute('aria-label', label(theme === 'dark' ? 'toLight' : 'toDark'));
     }
   }
 
@@ -60,185 +137,109 @@
     if (!storedTheme()) applyTheme(e.matches ? 'dark' : 'light');
   });
 
+  /* ------------------------------------------------------------------------
+     Langue FR / EN
+     Les textes visibles existent dans les deux langues dans le HTML
+     (data-lang="fr" / "en") et le CSS n'affiche que la langue choisie.
+     Ici, on traduit le titre de l'onglet et les attributs (alt, aria-label,
+     description) à partir de leurs versions data-en-*.
+     La langue initiale est posée dans le <head> (choix enregistré ou navigateur).
+     ------------------------------------------------------------------------ */
+
+  var langToggle = document.querySelector('.lang-toggle');
+  var titleElement = document.querySelector('title');
+  var titleFr = document.title;
+  var TRANSLATED_ATTRS = ['alt', 'aria-label', 'content'];
+
+  function applyLang(lang) {
+    root.setAttribute('data-lang', lang);
+    root.lang = lang;
+
+    document.title = lang === 'en' && titleElement.getAttribute('data-en')
+      ? titleElement.getAttribute('data-en')
+      : titleFr;
+
+    TRANSLATED_ATTRS.forEach(function (attr) {
+      document.querySelectorAll('[data-en-' + attr + ']').forEach(function (el) {
+        if (!el.hasAttribute('data-fr-' + attr)) {
+          el.setAttribute('data-fr-' + attr, el.getAttribute(attr) || '');
+        }
+        el.setAttribute(attr, el.getAttribute('data-' + lang + '-' + attr));
+      });
+    });
+
+    if (toggle && nav) {
+      toggle.setAttribute('aria-label', label(nav.classList.contains('is-open') ? 'menuClose' : 'menuOpen'));
+    }
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    repositionIndicator();
+  }
+
+  applyLang(currentLang());
+
+  if (langToggle) {
+    langToggle.addEventListener('click', function () {
+      var next = currentLang() === 'fr' ? 'en' : 'fr';
+      applyLang(next);
+      try {
+        localStorage.setItem('lang', next);
+      } catch (e) { /* stockage indisponible : le choix vaut pour cette page */ }
+    });
+  }
+
   document.querySelectorAll('[data-year]').forEach(function (el) {
     el.textContent = new Date().getFullYear();
   });
 
   /* ------------------------------------------------------------------------
-     API YouTube (chargée une seule fois, à la demande)
+     Accueil : vidéo plein écran (lue automatiquement par la balise <video>)
      ------------------------------------------------------------------------ */
 
-  var youTubeAPI = null;
+  var heroVideo = document.querySelector('.hero-bg video');
 
-  function loadYouTubeAPI() {
-    if (!youTubeAPI) {
-      youTubeAPI = new Promise(function (resolve) {
-        if (window.YT && window.YT.Player) {
-          resolve(window.YT);
-          return;
-        }
-        window.onYouTubeIframeAPIReady = function () {
-          resolve(window.YT);
-        };
-        var script = document.createElement('script');
-        script.src = 'https://www.youtube.com/iframe_api';
-        document.head.appendChild(script);
-      });
-    }
-    return youTubeAPI;
-  }
-
-  function youTubeVars(videoId) {
-    var vars = {
-      autoplay: 1,
-      mute: 1,
-      controls: 0,
-      playsinline: 1,
-      rel: 0,
-      disablekb: 1,
-      fs: 0,
-      iv_load_policy: 3,
-      loop: 1,
-      playlist: videoId
-    };
-    if (location.protocol.indexOf('http') === 0) {
-      vars.origin = location.origin;
-    }
-    return vars;
-  }
-
-  function hideFromKeyboard(iframe) {
-    iframe.setAttribute('tabindex', '-1');
-    iframe.setAttribute('aria-hidden', 'true');
-  }
-
-  /* Lecteur YouTube muet qui tourne en boucle, du début à la fin.
-     On ne le met jamais en pause et on ne saute jamais dans la vidéo :
-     sinon YouTube affiche un bouton pause au centre pendant quelques secondes.
-     Pour ne montrer qu'un passage, onUpdate(true) n'est appelé qu'entre
-     data-start et data-end (en secondes) ; l'image reste visible le reste du temps. */
-  function createLoopingYouTube(container, slot, onUpdate) {
-    var videoId = container.getAttribute('data-video');
-    var start = parseFloat(container.getAttribute('data-start')) || 0;
-    var end = parseFloat(container.getAttribute('data-end')) || Infinity;
-
-    loadYouTubeAPI().then(function (YT) {
-      new YT.Player(slot, {
-        videoId: videoId,
-        playerVars: youTubeVars(videoId),
-        events: {
-          onReady: function (e) {
-            var player = e.target;
-            hideFromKeyboard(player.getIframe());
-            player.mute();
-            player.playVideo();
-            setInterval(function () {
-              var t = player.getCurrentTime();
-              onUpdate(player.getPlayerState() === YT.PlayerState.PLAYING && t >= start && t < end);
-            }, 200);
-          },
-          onStateChange: function (e) {
-            if (e.data === YT.PlayerState.ENDED) e.target.playVideo();
-          }
-        }
-      });
-    });
-  }
-
-  /* ------------------------------------------------------------------------
-     Accueil : vidéo YouTube plein écran en boucle
-     ------------------------------------------------------------------------ */
-
-  var hero = document.querySelector('.hero-bg[data-video]');
-
-  if (hero && !reduceMotion) {
-    createLoopingYouTube(hero, hero.querySelector('.hero-player'), function (visible) {
-      hero.classList.toggle('is-playing', visible);
-    });
+  if (heroVideo && reduceMotion) {
+    heroVideo.removeAttribute('autoplay');
+    heroVideo.pause();
   }
 
   /* ------------------------------------------------------------------------
      Page 3D : l'image devient une vidéo au survol
-     - YouTube : lecteur préchargé à l'arrivée sur la page, affiché au survol.
-     - Vimeo : lecteur créé au premier survol, puis mis en pause / relancé.
+     Les extraits (quelques centaines de Ko) sont préchargés dès l'arrivée sur
+     la page, pour démarrer sans délai. Chaque survol repart du début.
      ------------------------------------------------------------------------ */
-
-  function createVimeoPlayer(media, isHovered) {
-    if (!window.Vimeo) return null;
-
-    var start = parseInt(media.getAttribute('data-start'), 10) || 0;
-    var iframe = document.createElement('iframe');
-    iframe.src = 'https://player.vimeo.com/video/' + media.getAttribute('data-video') +
-      '?background=1&muted=1&autoplay=1&loop=1&dnt=1#t=' + start + 's';
-    iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-    iframe.title = '';
-    hideFromKeyboard(iframe);
-    media.appendChild(iframe);
-
-    var player = new window.Vimeo.Player(iframe);
-    player.on('timeupdate', function () {
-      if (isHovered()) media.classList.add('is-playing');
-      else player.pause().catch(function () {});
-    });
-
-    return {
-      play: function () { player.play().catch(function () {}); },
-      pause: function () { player.pause().catch(function () {}); }
-    };
-  }
-
-  function onHover(el, callback) {
-    el.addEventListener('mouseenter', function () { callback(true); });
-    el.addEventListener('mouseleave', function () { callback(false); });
-    el.addEventListener('focus', function () { callback(true); });
-    el.addEventListener('blur', function () { callback(false); });
-  }
-
-  function setupYouTubeHover(media, trigger) {
-    var hovered = false;
-    var inRange = false;
-    var slot = document.createElement('div');
-
-    function update() {
-      media.classList.toggle('is-playing', hovered && inRange);
-    }
-
-    media.appendChild(slot);
-    createLoopingYouTube(media, slot, function (visible) {
-      inRange = visible;
-      update();
-    });
-    onHover(trigger, function (isHovered) {
-      hovered = isHovered;
-      update();
-    });
-  }
-
-  function setupVimeoHover(media, trigger) {
-    var hovered = false;
-    var player = null;
-
-    onHover(trigger, function (isHovered) {
-      hovered = isHovered;
-      if (!hovered) {
-        media.classList.remove('is-playing');
-        if (player) player.pause();
-      } else if (player) {
-        player.play();
-      } else {
-        player = createVimeoPlayer(media, function () { return hovered; });
-      }
-    });
-  }
 
   if (canHover && !reduceMotion) {
     document.querySelectorAll('.work-media[data-video]').forEach(function (media) {
       var trigger = media.closest('.work-link') || media;
-      if (media.getAttribute('data-provider') === 'vimeo') {
-        setupVimeoHover(media, trigger);
-      } else {
-        setupYouTubeHover(media, trigger);
+      var hovered = false;
+      var video = document.createElement('video');
+
+      video.src = media.getAttribute('data-video');
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.setAttribute('aria-hidden', 'true');
+      media.appendChild(video);
+
+      function enter() {
+        hovered = true;
+        video.play().then(function () {
+          if (hovered) media.classList.add('is-playing');
+        }).catch(function () { /* lecture refusée : l'image reste affichée */ });
       }
+
+      function leave() {
+        hovered = false;
+        media.classList.remove('is-playing');
+        video.pause();
+        video.currentTime = 0;
+      }
+
+      trigger.addEventListener('mouseenter', enter);
+      trigger.addEventListener('mouseleave', leave);
+      trigger.addEventListener('focus', enter);
+      trigger.addEventListener('blur', leave);
     });
   }
 })();

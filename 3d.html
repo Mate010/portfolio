@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projets 3D — Matéo Grossi</title>
-  <meta name="description" content="Projets 3D de Matéo Grossi : courts-métrages et projets de studio — modélisation, texturing, lighting et rendu temps réel sous Unreal Engine.">
+  <title data-en="3D Projects — Matéo Grossi">Projets 3D — Matéo Grossi</title>
+  <meta name="description" data-en-content="3D projects by Matéo Grossi: short films and studio work — modeling, texturing, lighting and real-time rendering in Unreal Engine." content="Projets 3D de Matéo Grossi : courts-métrages et projets de studio — modélisation, texturing, lighting et rendu temps réel sous Unreal Engine.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,31 +12,39 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <script>
     (function () {
-      var root = document.documentElement, theme = null;
+      var root = document.documentElement, theme = null, lang = null;
       root.classList.add('js');
-      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      try { theme = localStorage.getItem('theme'); lang = localStorage.getItem('lang'); } catch (e) {}
       if (theme !== 'light' && theme !== 'dark') {
         theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
+      if (lang !== 'fr' && lang !== 'en') {
+        lang = /^fr\b/i.test(navigator.language || '') ? 'fr' : 'en';
+      }
       root.setAttribute('data-theme', theme);
+      root.setAttribute('data-lang', lang);
+      root.lang = lang;
     })();
   </script>
-  <script src="https://player.vimeo.com/api/player.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
-<body>
+<body class="page-3d">
 
   <header class="site-header">
     <div class="header-inner">
-      <nav id="site-nav" class="site-nav" aria-label="Navigation principale">
+      <nav id="site-nav" class="site-nav" aria-label="Navigation principale" data-en-aria-label="Main navigation">
         <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="3d.html" aria-current="page">Projets 3D</a></li>
-          <li><a href="code.html">Code</a></li>
+          <li><a href="index.html"><span data-lang="fr">Accueil</span><span data-lang="en">Home</span></a></li>
+          <li><a href="3d.html" aria-current="page"><span data-lang="fr">Projets 3D</span><span data-lang="en">3D Projects</span></a></li>
+          <li><a href="code.html"><span data-lang="fr">Programmation</span><span data-lang="en">Programming</span></a></li>
           <li><a href="cv.html">CV & Contact</a></li>
         </ul>
       </nav>
       <div class="header-tools">
+        <button class="lang-toggle" type="button" aria-label="Changer de langue" data-en-aria-label="Change language">
+          <span class="lang-opt" data-opt="fr">FR</span>
+          <span class="lang-opt" data-opt="en">EN</span>
+        </button>
         <button class="theme-toggle" type="button" aria-label="Changer de thème">
           <svg class="icon icon-stroke icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
           <svg class="icon icon-stroke icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -50,11 +58,9 @@
 
   <main class="page">
     <header class="page-head">
-      <p class="eyebrow">Portfolio 3D</p>
-      <h1>Projets 3D</h1>
-      <p>Courts-métrages et projets réalisés en école et en studio : layout, modélisation, texturing, lighting et rendu temps réel sous Unreal Engine. Survolez un projet pour lancer la vidéo.</p>
-      <a class="link-arrow" href="https://www.youtube.com/watch?v=vMgToajT_ak" target="_blank" rel="noopener">
-        Voir le showreel 2024
+      <h1><span data-lang="fr">Projets 3D</span><span data-lang="en">3D Projects</span></h1>
+      <a class="link-arrow" href="https://www.artstation.com/mateogrossi" target="_blank" rel="noopener">
+        <span data-lang="fr">Tous mes projets sur ArtStation</span><span data-lang="en">All my projects on ArtStation</span>
         <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
       </a>
     </header>
@@ -62,107 +68,53 @@
     <!--
       Chaque carte :
         --ratio         format de la vignette dans la grille (ex. 4 / 5, 16 / 9)
-        data-provider   "youtube" ou "vimeo"
-        data-video      identifiant de la vidéo jouée au survol
-        data-start      seconde à partir de laquelle la vidéo est montrée
-        data-end        (YouTube) seconde à partir de laquelle on revient à l'image
-        --video-ratio   format réel de la vidéo, en décimal (16:9 = 1.7778)
+        --focus         partie de l'image gardée au recadrage (ex. 55% center)
+        data-video      extrait vidéo (assets/video/...) joué au survol
     -->
     <div class="masonry">
 
       <article class="work">
         <a class="work-link" href="https://www.artstation.com/artwork/bgr6KG" target="_blank" rel="noopener">
-          <div class="work-media" style="--ratio: 4 / 5; --video-ratio: 1.7778" data-provider="youtube" data-video="JLZ4-uhc98k" data-start="5" data-end="33">
-            <img src="assets/img/spacedan.jpg" alt="Image du film SpaceDan : Dan fête son anniversaire en apesanteur, entouré de ballons dorés" loading="lazy">
-            <span class="video-badge"><svg class="icon icon-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Vidéo</span>
+          <div class="work-media" style="--ratio: 4 / 5" data-video="assets/video/spacedan.mp4">
+            <img src="assets/img/spacedan.jpg" alt="Image du film SpaceDan : Dan fête son anniversaire en apesanteur, entouré de ballons dorés" data-en-alt="Still from SpaceDan: Dan celebrates his birthday in zero gravity, surrounded by golden balloons" loading="lazy">
           </div>
-          <div class="work-body">
-            <h2>SpaceDan</h2>
-            <p class="work-meta">Film de fin d'études · MoPA · 2024</p>
-            <p>Court-métrage de fin d'études entièrement réalisé sous Unreal Engine. Layout, modélisation, texturing et lighting.</p>
-            <ul class="tags">
-              <li>Unreal Engine</li>
-              <li>Layout</li>
-              <li>Modélisation</li>
-              <li>Texturing</li>
-              <li>Lighting</li>
-            </ul>
-          </div>
+          <h2 class="work-title">SpaceDan</h2>
         </a>
       </article>
 
-      <!-- À COMPLÉTER : titre, image (assets/img/...) et vidéo de ce projet -->
       <article class="work">
         <a class="work-link" href="https://www.artstation.com/artwork/zPaXgZ" target="_blank" rel="noopener">
-          <div class="work-media is-empty" style="--ratio: 1 / 1">
-            <span class="placeholder">
-              <svg class="icon icon-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M0 17.723l2.027 3.505h.001a2.424 2.424 0 0 0 2.164 1.333h13.457l-2.792-4.838H0zm24 .025c0-.484-.143-.935-.388-1.314L15.728 2.728a2.424 2.424 0 0 0-2.142-1.289H9.419L21.598 22.54l1.92-3.325c.378-.637.482-.919.482-1.467zm-11.129-3.462L7.428 4.858l-5.444 9.428h10.887z"/></svg>
-              Voir sur ArtStation
-            </span>
+          <div class="work-media" style="--ratio: 4 / 3; --focus: 49% 55%" data-video="assets/video/loops.mp4">
+            <img src="assets/img/loops.jpg" alt="Décor de forêt avec des blocs de pierre couverts de mousse" data-en-alt="Forest set with moss-covered stone blocks" loading="lazy">
           </div>
-          <div class="work-body">
-            <h2>Loops Creative Studio</h2>
-            <p class="work-meta">Stage · Angoulême · 2023</p>
-            <p>Stage de Generalist / Realtime Artist : layout, lighting, texturing et modélisation pour un court-métrage.</p>
-            <ul class="tags">
-              <li>Layout</li>
-              <li>Lighting</li>
-              <li>Texturing</li>
-              <li>Modélisation</li>
-            </ul>
-          </div>
+          <h2 class="work-title">Loops Creative Studio</h2>
         </a>
       </article>
 
       <article class="work">
         <a class="work-link" href="https://www.artstation.com/artwork/Dvgm4G" target="_blank" rel="noopener">
-          <div class="work-media" style="--ratio: 16 / 9; --video-ratio: 2.347" data-provider="vimeo" data-video="797159477" data-start="3">
-            <img src="assets/img/fishlike.jpg" alt="Image du film Fishlike : une boîte de maquereaux sur un tapis roulant" loading="lazy">
-            <span class="video-badge"><svg class="icon icon-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Vidéo</span>
+          <div class="work-media" style="--ratio: 16 / 9; --focus: 70% center" data-video="assets/video/fishlike.mp4">
+            <img src="assets/img/fishlike.jpg" alt="Image du film Fishlike : une boîte de maquereaux sur un tapis roulant" data-en-alt="Still from Fishlike: a tin of mackerel on a conveyor belt" loading="lazy">
           </div>
-          <div class="work-body">
-            <h2>Fishlike</h2>
-            <p class="work-meta">Court-métrage · MoPA</p>
-            <p>Court-métrage réalisé sous Unreal Engine à MoPA, en équipe avec Adrien Blanchard, Théophile Farant et Pablo Jegado.</p>
-            <ul class="tags">
-              <li>Unreal Engine</li>
-              <li>Court-métrage</li>
-            </ul>
-          </div>
+          <h2 class="work-title">Fishlike</h2>
         </a>
       </article>
 
       <article class="work">
         <a class="work-link" href="https://www.artstation.com/artwork/YBAr0V" target="_blank" rel="noopener">
-          <div class="work-media" style="--ratio: 16 / 10; --video-ratio: 1.7778" data-provider="vimeo" data-video="797152702" data-start="3">
-            <img src="assets/img/punch.jpg" alt="Affiche du film Punch : un cafard posé sur des gants de boxe rouges" loading="lazy">
-            <span class="video-badge"><svg class="icon icon-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Vidéo</span>
+          <div class="work-media" style="--ratio: 16 / 10" data-video="assets/video/punch.mp4">
+            <img src="assets/img/punch.jpg" alt="Image du film Punch : des gants de boxe rouges posés sur un tabouret" data-en-alt="Still from Punch: red boxing gloves resting on a stool" loading="lazy">
           </div>
-          <div class="work-body">
-            <h2>Punch</h2>
-            <p class="work-meta">Court-métrage · L'École des Nouvelles Images</p>
-            <p>Court-métrage réalisé en troisième année à L'École des Nouvelles Images, à Avignon.</p>
-            <ul class="tags">
-              <li>Animation 3D</li>
-              <li>Court-métrage</li>
-            </ul>
-          </div>
+          <h2 class="work-title">Punch</h2>
         </a>
       </article>
 
-      <!-- À COMPLÉTER : titre, image (assets/img/...) et vidéo de ce projet -->
       <article class="work">
         <a class="work-link" href="https://www.artstation.com/artwork/obaWVB" target="_blank" rel="noopener">
-          <div class="work-media is-empty" style="--ratio: 4 / 3">
-            <span class="placeholder">
-              <svg class="icon icon-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M0 17.723l2.027 3.505h.001a2.424 2.424 0 0 0 2.164 1.333h13.457l-2.792-4.838H0zm24 .025c0-.484-.143-.935-.388-1.314L15.728 2.728a2.424 2.424 0 0 0-2.142-1.289H9.419L21.598 22.54l1.92-3.325c.378-.637.482-.919.482-1.467zm-11.129-3.462L7.428 4.858l-5.444 9.428h10.887z"/></svg>
-              Voir sur ArtStation
-            </span>
+          <div class="work-media" style="--ratio: 4 / 3" data-video="assets/video/puppet.mp4">
+            <img src="assets/img/puppet.jpg" alt="Deux marionnettes sur la scène de The Puppet Striker Show" data-en-alt="Two puppets on the stage of The Puppet Striker Show" loading="lazy">
           </div>
-          <div class="work-body">
-            <h2>The Puppet Striker Show</h2>
-            <p class="work-meta">Projet 3D</p>
-          </div>
+          <h2 class="work-title">The Puppet Striker Show</h2>
         </a>
       </article>
 
