@@ -67,49 +67,63 @@
 
     <div class="code-grid">
 
-      <article class="code-card">
-        <div class="code-card-body">
-          <h2>ft_irc</h2>
-          <p data-lang="fr">Serveur IRC conforme à la RFC&nbsp;1459. Il accepte plusieurs clients en même temps grâce à des sockets TCP non bloquants et au multiplexage d'entrées/sorties avec <code>epoll</code>. Il gère les canaux et leurs commandes (JOIN, KICK, INVITE, TOPIC, MODE), fonctionne avec le client Irssi ou Netcat, et embarque un bot qui répond aux questions sur les dinosaures.</p>
-          <p data-lang="en">IRC server compliant with RFC&nbsp;1459. It handles several clients at once using non-blocking TCP sockets and I/O multiplexing with <code>epoll</code>. It supports channels and their commands (JOIN, KICK, INVITE, TOPIC, MODE), works with the Irssi client or Netcat, and includes a bot that answers questions about dinosaurs.</p>
-        </div>
-        <div class="code-card-foot">
-          <a class="link-arrow" href="https://github.com/Mate010/ft_irc" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-        </div>
-      </article>
+      <div class="code-col">
+        <article class="code-card">
+          <div class="code-card-body">
+            <div class="code-card-head">
+              <h2>ft_irc</h2>
+              <ul class="chips" aria-label="Langages" data-en-aria-label="Languages"><li>C++</li></ul>
+            </div>
+            <p data-lang="fr">Serveur IRC conforme à la RFC&nbsp;1459. Il accepte plusieurs clients en même temps grâce à des sockets TCP non bloquants et au multiplexage d'entrées/sorties avec <code>epoll</code>. Il gère les canaux et leurs commandes (JOIN, KICK, INVITE, TOPIC, MODE), fonctionne avec le client Irssi ou Netcat, et embarque un bot qui répond aux questions sur les dinosaures.</p>
+            <p data-lang="en">IRC server compliant with RFC&nbsp;1459. It handles several clients at once using non-blocking TCP sockets and I/O multiplexing with <code>epoll</code>. It supports channels and their commands (JOIN, KICK, INVITE, TOPIC, MODE), works with the Irssi client or Netcat, and includes a bot that answers questions about dinosaurs.</p>
+            <a class="link-arrow code-card-link" href="https://github.com/Mate010/ft_irc" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </div>
+        </article>
 
-      <article class="code-card">
-        <div class="code-card-body">
-          <h2>MiniRT</h2>
-          <p data-lang="fr">Mini ray tracer. Le programme lit une scène décrite dans un fichier <code>.rt</code> (caméra, lumières, sphères, plans, cylindres), lance un rayon par pixel pour trouver l'objet le plus proche, puis calcule l'éclairage ambiant, la lumière ponctuelle et les ombres portées. L'image est affichée avec la MiniLibX.</p>
-          <p data-lang="en">A small ray tracer. The program reads a scene described in a <code>.rt</code> file (camera, lights, spheres, planes, cylinders), casts one ray per pixel to find the closest object, then computes ambient light, point light and cast shadows. The image is displayed with the MiniLibX.</p>
-        </div>
-        <div class="code-card-foot">
-          <a class="link-arrow" href="https://github.com/Mate010/MiniRT" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-        </div>
-      </article>
+        <article class="code-card code-card--media">
+          <div class="code-card-media">
+            <img src="assets/img/fdf.jpg" alt="Rendu de FdF : un terrain en fil de fer en vue isométrique, coloré selon l'altitude" data-en-alt="FdF render: a wireframe terrain in isometric view, colored by altitude" loading="lazy">
+          </div>
+          <div class="code-card-body">
+            <div class="code-card-head">
+              <h2>FdF</h2>
+              <ul class="chips" aria-label="Langages" data-en-aria-label="Languages"><li>C</li></ul>
+            </div>
+            <p data-lang="fr">Visualiseur de relief en fil de fer. Le programme lit une carte où chaque nombre est une altitude, puis la projette en vue isométrique avec la MiniLibX. Au clavier, on peut zoomer, déplacer la carte et accentuer ou aplatir le relief.</p>
+            <p data-lang="en">A wireframe terrain viewer. The program reads a map where each number is an altitude and projects it in isometric view with the MiniLibX. With the keyboard you can zoom, move the map and raise or flatten the terrain.</p>
+            <a class="link-arrow code-card-link" href="https://github.com/Mate010/fdf" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </div>
+        </article>
+      </div>
 
-      <article class="code-card">
-        <div class="code-card-body">
-          <h2>Minishell</h2>
-          <p data-lang="fr">Shell Unix simplifié, inspiré de bash. La saisie est lue avec readline, découpée en tokens, puis les variables d'environnement sont développées en respectant les quotes. Les commandes s'exécutent avec pipes, redirections et heredocs. Les builtins (echo, cd, pwd, export, unset, env, exit) et les signaux Ctrl-C, Ctrl-D et Ctrl-\ sont gérés.</p>
-          <p data-lang="en">A simplified Unix shell inspired by bash. Input is read with readline and split into tokens, then environment variables are expanded while respecting quotes. Commands run with pipes, redirections and heredocs. Builtins (echo, cd, pwd, export, unset, env, exit) and the Ctrl-C, Ctrl-D and Ctrl-\ signals are handled.</p>
-        </div>
-        <div class="code-card-foot">
-          <a class="link-arrow" href="https://github.com/Mate010/Minishell" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-        </div>
-      </article>
+      <div class="code-col">
+        <article class="code-card code-card--media">
+          <div class="code-card-media">
+            <img src="assets/img/minirt.jpg" alt="Rendu de MiniRT : sphères, cônes et cylindres colorés avec leurs ombres portées sur un sol" data-en-alt="MiniRT render: colorful spheres, cones and cylinders casting shadows on a floor" loading="lazy">
+          </div>
+          <div class="code-card-body">
+            <div class="code-card-head">
+              <h2>MiniRT</h2>
+              <ul class="chips" aria-label="Langages" data-en-aria-label="Languages"><li>C</li></ul>
+            </div>
+            <p data-lang="fr">Mini ray tracer. Le programme lit une scène décrite dans un fichier <code>.rt</code> (caméra, lumières, sphères, plans, cylindres), lance un rayon par pixel pour trouver l'objet le plus proche, puis calcule l'éclairage ambiant, la lumière ponctuelle et les ombres portées. L'image est affichée avec la MiniLibX.</p>
+            <p data-lang="en">A small ray tracer. The program reads a scene described in a <code>.rt</code> file (camera, lights, spheres, planes, cylinders), casts one ray per pixel to find the closest object, then computes ambient light, point light and cast shadows. The image is displayed with the MiniLibX.</p>
+            <a class="link-arrow code-card-link" href="https://github.com/Mate010/MiniRT" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </div>
+        </article>
 
-      <article class="code-card">
-        <div class="code-card-body">
-          <h2>FdF</h2>
-          <p data-lang="fr">Visualiseur de relief en fil de fer. Le programme lit une carte où chaque nombre est une altitude, puis la projette en vue isométrique avec la MiniLibX. Au clavier, on peut zoomer, déplacer la carte et accentuer ou aplatir le relief.</p>
-          <p data-lang="en">A wireframe terrain viewer. The program reads a map where each number is an altitude and projects it in isometric view with the MiniLibX. With the keyboard you can zoom, move the map and raise or flatten the terrain.</p>
-        </div>
-        <div class="code-card-foot">
-          <a class="link-arrow" href="https://github.com/Mate010/fdf" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-        </div>
-      </article>
+        <article class="code-card">
+          <div class="code-card-body">
+            <div class="code-card-head">
+              <h2>Minishell</h2>
+              <ul class="chips" aria-label="Langages" data-en-aria-label="Languages"><li>C</li></ul>
+            </div>
+            <p data-lang="fr">Shell Unix simplifié, inspiré de bash. La saisie est lue avec readline, découpée en tokens, puis les variables d'environnement sont développées en respectant les quotes. Les commandes s'exécutent avec pipes, redirections et heredocs. Les builtins (echo, cd, pwd, export, unset, env, exit) et les signaux Ctrl-C, Ctrl-D et Ctrl-\ sont gérés.</p>
+            <p data-lang="en">A simplified Unix shell inspired by bash. Input is read with readline and split into tokens, then environment variables are expanded while respecting quotes. Commands run with pipes, redirections and heredocs. Builtins (echo, cd, pwd, export, unset, env, exit) and the Ctrl-C, Ctrl-D and Ctrl-\ signals are handled.</p>
+            <a class="link-arrow code-card-link" href="https://github.com/Mate010/Minishell" target="_blank" rel="noopener"><span data-lang="fr">Voir sur GitHub</span><span data-lang="en">View on GitHub</span> <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </div>
+        </article>
+      </div>
 
     </div>
   </main>

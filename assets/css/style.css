@@ -391,16 +391,12 @@ html[data-lang="en"] .lang-opt[data-opt="en"] {
    Accueil : vidéo plein écran
    -------------------------------------------------------------------------- */
 
-/* Accueil, 3D et CV : barre de défilement masquée, le défilement reste possible */
-html:has(body.home),
-html:has(body.page-3d),
-html:has(body.page-cv) {
+/* Toutes les pages : barre de défilement masquée, le défilement reste possible */
+html {
   scrollbar-width: none;
 }
 
-html:has(body.home)::-webkit-scrollbar,
-html:has(body.page-3d)::-webkit-scrollbar,
-html:has(body.page-cv)::-webkit-scrollbar {
+html::-webkit-scrollbar {
   display: none;
 }
 
@@ -475,10 +471,6 @@ html:has(body.page-cv)::-webkit-scrollbar {
   font-size: clamp(2.5rem, 6.5vw, 5.25rem);
   font-weight: 300;
   line-height: 1.1;
-}
-
-.hero h1 strong {
-  font-weight: 700;
 }
 
 /* --------------------------------------------------------------------------
@@ -557,8 +549,9 @@ body:not(.home) {
 }
 
 /* Sur grand écran, la galerie tient dans la hauteur de la fenêtre, sans défiler :
-   SpaceDan occupe les deux premières colonnes de la 1re ligne, les 4 autres projets
-   remplissent le reste.
+   en haut, SpaceDan occupe les deux premières colonnes, et à sa droite The Puppet Striker
+   Show et Loops se partagent la hauteur en deux demi-cartes ; en bas, Punch est à gauche
+   et Fishlike occupe les deux dernières colonnes.
    Images et vidéos sont recadrées (object-fit: cover) pour remplir chaque case. */
 @media (min-width: 1001px) and (min-height: 600px) {
   .page-3d {
@@ -578,17 +571,22 @@ body:not(.home) {
     min-height: 0;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
     gap: 20px;
   }
 
   .page-3d .work {
+    grid-row: span 2;
     min-height: 0;
     margin: 0;
   }
 
-  .page-3d .work:first-child {
+  .page-3d .work--wide {
     grid-column: span 2;
+  }
+
+  .page-3d .work--half {
+    grid-row: span 1;
   }
 
   .page-3d .work-link {
@@ -681,9 +679,17 @@ body:not(.home) {
    Page Code : une box par projet
    -------------------------------------------------------------------------- */
 
+/* Deux colonnes indépendantes : chaque carte garde sa hauteur, sans espace vide */
 .code-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 24px;
+}
+
+.code-col {
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 }
 
@@ -703,21 +709,112 @@ body:not(.home) {
   box-shadow: var(--shadow);
 }
 
+.code-card-media {
+  aspect-ratio: 3 / 1;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: #000;
+}
+
+.code-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Sur grand écran, comme sur la page 3D, la page prend la hauteur de la fenêtre et
+   le bas des cartes arrive au même niveau que sur la page 3D. Les zones de texte
+   prennent la hauteur de leur contenu et les images s'agrandissent pour occuper le
+   reste, sans espace vide sous les paragraphes. Si la fenêtre est trop basse, les
+   images gardent une hauteur minimale et la page défile. */
+@media (min-width: 1001px) and (min-height: 600px) {
+  .page-code {
+    --code-img-h: clamp(100px, 12svh, 160px);
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .page-code .page {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+  }
+
+  .page-code .code-grid {
+    flex: 1;
+    align-items: stretch;
+  }
+
+  /* Rangées : texte, espace de 24px, image, texte (colonne de gauche) */
+  .code-col {
+    display: grid;
+    grid-template-rows: auto 24px minmax(var(--code-img-h), 1fr) auto;
+    gap: 0;
+  }
+
+  .code-col > :first-child {
+    grid-row: 1;
+  }
+
+  .code-col > :last-child {
+    grid-row: 3 / span 2;
+  }
+
+  /* Colonne qui commence par l'image : image, texte, espace de 24px, texte */
+  .code-col:has(> .code-card--media:first-child) {
+    grid-template-rows: minmax(var(--code-img-h), 1fr) auto 24px auto;
+  }
+
+  .code-col:has(> .code-card--media:first-child) > :first-child {
+    grid-row: 1 / span 2;
+  }
+
+  .code-col:has(> .code-card--media:first-child) > :last-child {
+    grid-row: 4;
+  }
+
+  /* La carte avec image reprend les rangées de la colonne : l'image et son texte */
+  .code-card--media {
+    display: grid;
+    grid-template-rows: subgrid;
+  }
+
+  .code-card-media {
+    position: relative;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
+  .code-card-media img {
+    position: absolute;
+    inset: 0;
+  }
+}
+
 .code-card-body {
   flex: 1;
-  padding: 24px 24px 20px;
+  padding: 16px 24px 18px;
+}
+
+.code-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 8px;
 }
 
 .code-card h2 {
-  margin: 0 0 12px;
+  margin: 0;
   font-family: var(--font-heading);
   font-size: 1.35rem;
   font-weight: 700;
 }
 
 .code-card p {
-  margin: 0 0 18px;
+  margin: 0;
   color: var(--text-soft);
+  font-size: 0.95rem;
 }
 
 .code-card code {
@@ -728,11 +825,8 @@ body:not(.home) {
   font-size: 0.85em;
 }
 
-.code-card-foot {
-  display: flex;
-  justify-content: center;
-  padding: 14px 24px;
-  border-top: 1px solid var(--border);
+.code-card-link {
+  margin-top: 12px;
 }
 
 /* --------------------------------------------------------------------------
@@ -920,6 +1014,15 @@ body:not(.home) {
   color: var(--text-soft);
 }
 
+.tl-award {
+  margin: 4px 0 0;
+  font-weight: 700;
+}
+
+.tl-link {
+  margin-top: 8px;
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1033,11 +1136,7 @@ body:not(.home) {
   }
 
   .code-card-body {
-    padding: 20px 18px 16px;
-  }
-
-  .code-card-foot {
-    padding: 14px 18px;
+    padding: 18px;
   }
 }
 
