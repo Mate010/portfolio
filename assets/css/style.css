@@ -147,6 +147,7 @@ html[data-lang="en"] [data-lang="fr"] {
   position: sticky;
   top: 0;
   z-index: 50;
+  flex-shrink: 0;
   height: var(--header-h);
   background: var(--header-bg);
   -webkit-backdrop-filter: blur(10px);
@@ -1052,6 +1053,7 @@ body:not(.home) {
    -------------------------------------------------------------------------- */
 
 .site-footer {
+  flex-shrink: 0;
   border-top: 1px solid var(--border);
 }
 
