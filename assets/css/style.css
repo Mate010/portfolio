@@ -152,7 +152,6 @@ html[data-lang="en"] [data-lang="fr"] {
   background: var(--header-bg);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
 }
 
 /* Navigation centrée ; boutons thème / menu dans le coin droit */
@@ -190,7 +189,6 @@ html[data-lang="en"] [data-lang="fr"] {
 
 .site-nav a:hover {
   color: var(--text);
-  text-decoration-color: var(--border-hover);
 }
 
 /* Onglet actif : souligné de la couleur du texte (blanc en thème sombre) */
@@ -730,7 +728,7 @@ body:not(.home) {
    images gardent une hauteur minimale et la page défile. */
 @media (min-width: 1001px) and (min-height: 600px) {
   .page-code {
-    --code-img-h: clamp(100px, 12svh, 160px);
+    --code-img-h: clamp(80px, 10svh, 130px);
     height: 100vh;
     height: 100svh;
   }
@@ -743,6 +741,7 @@ body:not(.home) {
 
   .page-code .code-grid {
     flex: 1;
+    grid-template-rows: 1fr auto;
     align-items: stretch;
   }
 
@@ -826,8 +825,46 @@ body:not(.home) {
   font-size: 0.85em;
 }
 
-.code-card-link {
-  margin-top: 12px;
+/* Le titre et l'image mènent aussi au dépôt GitHub */
+.code-card-title {
+  color: inherit;
+  text-decoration: none;
+}
+
+.code-card-title:hover {
+  color: var(--accent);
+}
+
+.code-card-img-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Carte sur toute la largeur, sous les deux colonnes */
+.code-card--wide {
+  grid-column: 1 / -1;
+}
+
+/* Sur écran large, l'image passe à droite du texte et prend toute la hauteur de la carte */
+@media (min-width: 801px) {
+  .code-card--wide {
+    flex-direction: row;
+  }
+
+  .code-card--wide .code-card-media {
+    position: relative;
+    order: 1;
+    flex: 0 0 30%;
+    aspect-ratio: auto;
+    border-bottom: 0;
+    border-left: 1px solid var(--border);
+  }
+
+  .code-card--wide .code-card-media img {
+    position: absolute;
+    inset: 0;
+  }
 }
 
 /* --------------------------------------------------------------------------
